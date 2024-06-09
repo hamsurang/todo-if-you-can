@@ -15,13 +15,13 @@ interface AddButtonProps {
   onClick: () => void;
 }
 export function AddButton({ onClick }: AddButtonProps) {
-  const { play } = useRidiculeSound();
+  const { play: playRidiculeSound } = useRidiculeSound();
 
   const toast = useToast();
   const [positionIndex, setPositionIndex] = useState(0);
 
   function 놀리기() {
-    play();
+    playRidiculeSound();
     toast({
       title: "조금만 더 참고 눌러봐요",
       status: "info",
