@@ -13,6 +13,7 @@ import {
 import { useOverlay } from "@toss/use-overlay";
 import { useCallback, useMemo, useState } from "react";
 import { useSessionStorage } from "usehooks-ts";
+import { TodoItemType } from "../constant";
 
 export function useUploadModal() {
   const overlay = useOverlay();
@@ -35,7 +36,10 @@ export function UploadModal({ isOpen, onClose }: UploadModalProps) {
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
   const [input, setInput] = useState("");
-  const [todoList, setTodoList] = useSessionStorage<string[]>("킹받두", []);
+  const [todoList, setTodoList] = useSessionStorage<TodoItemType[]>(
+    "킹받두",
+    [],
+  );
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -63,18 +67,18 @@ export function UploadModal({ isOpen, onClose }: UploadModalProps) {
             colorScheme="blue"
             mr={3}
             onClick={() => {
-              if (!isLoading) {
-                setIsLoading(true);
-                setTimeout(() => {
-                  toast({
-                    title: "로딩 구라임 ㅋㅋ 그냥 딤 영역 클릭하셈 ㅋ",
-                    containerStyle: {
-                      marginBottom: "24px",
-                    },
-                  });
-                }, 2_000);
-                return;
-              }
+              // if (!isLoading) {
+              //   setIsLoading(true);
+              //   setTimeout(() => {
+              //     toast({
+              //       title: "로딩 구라임 ㅋㅋ 그냥 딤 영역 클릭하셈 ㅋ",
+              //       containerStyle: {
+              //         marginBottom: "24px",
+              //       },
+              //     });
+              //   }, 2_000);
+              //   return;
+              // }
               toast({
                 title: "저장 누른다고 저장이 될까요?",
                 status: "error",
@@ -90,7 +94,10 @@ export function UploadModal({ isOpen, onClose }: UploadModalProps) {
           <Button
             variant="ghost"
             onClick={() => {
-              setTodoList([...todoList, input]);
+              setTodoList([
+                ...todoList,
+                { id: Date.now(), text: input, done: false },
+              ]);
               toast({
                 title: "취소 눌러야 저장됌ㅋ",
 
