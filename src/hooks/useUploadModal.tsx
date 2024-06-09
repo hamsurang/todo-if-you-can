@@ -14,6 +14,7 @@ import { useOverlay } from "@toss/use-overlay";
 import { useCallback, useMemo, useState } from "react";
 import { useSessionStorage } from "usehooks-ts";
 import { TodoItemType } from "../constant";
+import { delay } from "../utils/delay";
 
 export function useUploadModal() {
   const overlay = useOverlay();
@@ -66,19 +67,18 @@ export function UploadModal({ isOpen, onClose }: UploadModalProps) {
             isLoading={isLoading}
             colorScheme="blue"
             mr={3}
-            onClick={() => {
-              // if (!isLoading) {
-              //   setIsLoading(true);
-              //   setTimeout(() => {
-              //     toast({
-              //       title: "로딩 구라임 ㅋㅋ 그냥 딤 영역 클릭하셈 ㅋ",
-              //       containerStyle: {
-              //         marginBottom: "24px",
-              //       },
-              //     });
-              //   }, 2_000);
-              //   return;
-              // }
+            onClick={async () => {
+              setIsLoading(true);
+              await delay(2_000);
+              toast({
+                title: "로딩 구라임 ㅋㅋ그냥 좀 기다리셈ㅋ",
+                containerStyle: {
+                  marginBottom: "128px",
+                },
+              });
+
+              await delay(2_000);
+
               toast({
                 title: "저장 누른다고 저장이 될까요?",
                 status: "error",
