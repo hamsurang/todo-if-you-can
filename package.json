@@ -18,7 +18,6 @@
     "framer-motion": "^11.2.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "use-sound": "^4.0.1",
     "usehooks-ts": "^3.1.0",
     "y": "^0.3.2"
   },

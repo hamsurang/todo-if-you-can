@@ -15,7 +15,6 @@ import { useCallback, useMemo, useState } from "react";
 import { useSessionStorage } from "usehooks-ts";
 import { TodoItemType } from "../constant";
 import { delay } from "../utils/delay";
-import { useRidiculeSound } from "./useRidiculeSound";
 
 export function useUploadModal() {
   const overlay = useOverlay();
@@ -36,7 +35,6 @@ interface UploadModalProps {
 
 export function UploadModal({ isOpen, onClose }: UploadModalProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const { play: playRidiculeSound } = useRidiculeSound();
   const toast = useToast();
   const [input, setInput] = useState("");
   const [todoList, setTodoList] = useSessionStorage<TodoItemType[]>(
@@ -78,7 +76,6 @@ export function UploadModal({ isOpen, onClose }: UploadModalProps) {
                   marginBottom: "128px",
                 },
               });
-              playRidiculeSound();
 
               await delay(2_000);
 
