@@ -2,6 +2,7 @@ import { AddIcon } from "@chakra-ui/icons";
 import { IconButton, useToast } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { useRidiculeSound } from "../hooks/useRidiculeSound";
 
 const positions = [
   { top: "24px", right: "24px", bottom: "auto", left: "auto" },
@@ -14,10 +15,13 @@ interface AddButtonProps {
   onClick: () => void;
 }
 export function AddButton({ onClick }: AddButtonProps) {
+  const { play: playRidiculeSound } = useRidiculeSound();
+
   const toast = useToast();
   const [positionIndex, setPositionIndex] = useState(0);
 
   function 놀리기() {
+    playRidiculeSound();
     toast({
       title: "조금만 더 참고 눌러봐요",
       status: "info",
@@ -37,7 +41,6 @@ export function AddButton({ onClick }: AddButtonProps) {
   return (
     <motion.div
       animate={positions[positionIndex]}
-      transition={{ duration: 0.5 }}
       style={{
         position: "absolute",
         width: "48px",
