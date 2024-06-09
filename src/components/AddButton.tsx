@@ -23,7 +23,7 @@ export function AddButton({ onClick }: AddButtonProps) {
   function 놀리기() {
     playRidiculeSound();
     toast({
-      title: "조금만 더 참고 눌러봐요",
+      title: "조금만 더 참고 눌러봐요.",
       status: "info",
     });
   }
