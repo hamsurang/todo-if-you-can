@@ -39,7 +39,7 @@ export function UploadModal({ isOpen, onClose }: UploadModalProps) {
   const [input, setInput] = useState("");
   const [todoList, setTodoList] = useSessionStorage<TodoItemType[]>(
     "킹받두",
-    [],
+    []
   );
 
   return (
@@ -102,7 +102,6 @@ export function UploadModal({ isOpen, onClose }: UploadModalProps) {
                     marginBottom: "24px",
                   },
                 });
-                playRidiculeSound();
 
                 onClose();
                 return;
