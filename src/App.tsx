@@ -1,6 +1,4 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 import { Button } from "@chakra-ui/react";
 import { useUploadModal } from "./hooks/useUploadModal";
@@ -10,15 +8,11 @@ function App() {
   const { open } = useUploadModal();
 
   return (
-    <>
-      <Button
-        onClick={() => {
-          open();
-        }}
-      >
-        아아아아아
-      </Button>
-    </>
+    <div className="layout">
+      <section>
+        <h1>킹받do</h1>
+      </section>
+    </div>
   );
 }
 
