@@ -44,6 +44,11 @@ function App() {
           );
         }
       }
+      if(clickCount > 3) {
+        setClickCount(0);
+        setSelectedTodoId(undefined);
+        setTodoList(todoList.map((todo) => ({ ...todo, done: false })));
+      }
     };
 
     handleQuizModal();
