@@ -94,6 +94,17 @@ export function UploadModal({ isOpen, onClose }: UploadModalProps) {
           <Button
             variant="ghost"
             onClick={() => {
+              if (input === "") {
+                toast({
+                  title: "왜 그냥 닫아? 지킬 자신이 없어요?",
+
+                  containerStyle: {
+                    marginBottom: "24px",
+                  },
+                });
+                onClose();
+                return;
+              }
               setTodoList([
                 ...todoList,
                 { id: Date.now(), text: input, done: false },
