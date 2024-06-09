@@ -1,41 +1,61 @@
 import "./App.css";
-import { Button } from "@chakra-ui/react";
+import { useToast } from "@chakra-ui/react";
 import { useSessionStorage } from "usehooks-ts";
 import { useUploadModal } from "./hooks/useUploadModal";
 import { TodoItem } from "./components/TodoItem";
+import { TodoItemType } from "./constant";
+import { useState, useEffect } from "react";
 import { useQuizModal } from "./hooks/useQuizModal";
 import { AddButton } from "./components/AddButton";
 
 function App() {
-  const [todoList, setTodoList] = useSessionStorage("킹받두", []);
-  const { open: openUploadModal } = useUploadModal();
+  const [todoList, setTodoList] = useSessionStorage<TodoItemType[]>("킹받두", []);
+  const [clickCount, setClickCount] = useState(0);
+  const { open:openUploadModal } = useUploadModal();
   const { open: openQuizModal } = useQuizModal();
+  const  [selectedTodoId, setSelectedTodoId] = useState<number | undefined>(undefined);
+  const  toast = useToast();
+
+  useEffect(() => {
+    const handleQuizModal = async () => {
+      if (clickCount === 3) {
+        const isCorrect = await openQuizModal();
+        if (isCorrect) {
+          setTodoList((prevTodoList) =>
+            prevTodoList.map((todo) => {
+              if (todo.id === selectedTodoId) {
+                return { ...todo, done: !todo.done };
+              }
+              return todo;
+            })
+          );
+        }
+      }
+      if(clickCount > 3) {
+        setClickCount(0);
+        setSelectedTodoId(undefined);
+        setTodoList(todoList.map((todo) => ({ ...todo, done: false })));
+      }
+    };
+
+    handleQuizModal();
+  }, [clickCount, openQuizModal, selectedTodoId, setTodoList, todoList]);
 
   return (
     <div className="layout">
       <section className="todo-list">
         <h1 className="title">킹받do</h1>
-        <Button
-          onClick={async () => {
-            const qwe = await openQuizModal();
-            console.log(qwe);
-          }}
-        >
-          퀴즈풀기
-        </Button>
         {todoList.map((todo, index) => (
           <TodoItem
             key={index}
             todo={todo}
-            onToggle={(id) => {
-              setTodoList(
-                todoList.map((todo) => {
-                  if (todo.id === id) {
-                    return { ...todo, done: !todo.done };
-                  }
-                  return todo;
-                }),
-              );
+            onToggle={async (id) => {
+              if(clickCount<3){
+                toast({
+                  title: "어?! 어라라... 3번 누르면 될까?"})
+              }
+              setClickCount((prev) => prev + 1);
+              setSelectedTodoId(id);
             }}
             onRemove={(id) => {
               setTodoList(todoList.filter((todo) => todo.id !== id));
