@@ -4,10 +4,11 @@ import { useSessionStorage } from "usehooks-ts";
 import { useUploadModal } from "./hooks/useUploadModal";
 import { TodoItem } from "./components/TodoItem";
 import { useQuizModal } from "./hooks/useQuizModal";
+import { AddButton } from "./components/AddButton";
 
 function App() {
   const [todoList, setTodoList] = useSessionStorage("킹받두", []);
-  const { open } = useUploadModal();
+  const { open: openUploadModal } = useUploadModal();
   const { open: openQuizModal } = useQuizModal();
 
   return (
@@ -22,7 +23,6 @@ function App() {
         >
           퀴즈풀기
         </Button>
-        <Button onClick={open}>todo입력해do</Button>
         {todoList.map((todo, index) => (
           <TodoItem
             key={index}
@@ -42,6 +42,7 @@ function App() {
             }}
           />
         ))}
+        <AddButton onClick={openUploadModal} />
       </section>
     </div>
   );
