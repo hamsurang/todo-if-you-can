@@ -9,8 +9,8 @@ function App() {
 
   return (
     <div className="layout">
-      <section>
-        <h1>킹받do</h1>
+      <section className="todo-list">
+        <h1 className="title">킹받do</h1>
       </section>
     </div>
   );
