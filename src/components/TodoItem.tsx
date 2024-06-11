@@ -4,18 +4,18 @@ interface TodoItemProps {
     todo: TodoItemType
     onToggle: (id: number) => void
     onRemove: (id: number) => void
-    onUpdate: (id: number) => void
+    onUpdate: (id: number, text: string) => void
 }
 
 export const TodoItem = ({ todo, onToggle, onRemove, onUpdate }: TodoItemProps) => {
 
     return (
-        <div
+        <section
             style={{
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                padding: "16px 0",
+                padding: "16px",
                 width: "100%",
             }}
         >
@@ -23,6 +23,8 @@ export const TodoItem = ({ todo, onToggle, onRemove, onUpdate }: TodoItemProps) 
                 style={{
                     display: "flex",
                     alignItems: "space-between",
+                    width:'100%',
+                    maxWidth:'calc(100% - 130px)',
                 }}
             >
                 <Checkbox
@@ -34,7 +36,7 @@ export const TodoItem = ({ todo, onToggle, onRemove, onUpdate }: TodoItemProps) 
                     isChecked={todo.done}
                     onChange={() => onToggle(todo.id)}
                 />
-                <div
+                <span
                     style={{
                         fontSize:'24px',
                         fontWeight: "bold",
@@ -42,16 +44,20 @@ export const TodoItem = ({ todo, onToggle, onRemove, onUpdate }: TodoItemProps) 
                         marginLeft: "8px",
                         marginRight:"25px",                        
                         textDecoration: todo.done ? "line-through" : "none",
+                        textOverflow:'ellipsis',
+                        whiteSpace:'nowrap',
+                        overflow:'hidden',
                     }}
                 >
                     {todo.text}
-                </div>
+                </span>
             </div>
             <div style={{
                 display: "flex",
                 gap: "10px",
+                width:"max-content"
             }}>
-            <Button onClick={() => onUpdate(todo.id)}>
+            <Button onClick={() => onUpdate(todo.id, todo.text)}>
                 수정
             </Button>
             <Button
@@ -60,6 +66,6 @@ export const TodoItem = ({ todo, onToggle, onRemove, onUpdate }: TodoItemProps) 
                 삭제
             </Button>
             </div>
-        </div>
+        </section>
     );
 }

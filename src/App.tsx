@@ -21,11 +21,20 @@ function App() {
     undefined,
   );
   const toast = useToast();
-  const [selectedText, setSelectedText] = useState<string>();
+  const [selectedText, setSelectedText] = useState<string| undefined>(undefined);
   const { open: openEditModal } = useEditModal({
     id: selectedTodoId ?? 0,
     text: selectedText ?? "",
   });
+
+  useEffect(()=>{
+    if(!selectedTodoId  || !selectedText){
+      return;
+    }
+    openEditModal();
+    setSelectedText(undefined);
+  },[openEditModal, selectedText, selectedTodoId])
+
 
   useEffect(() => {
     const handleQuizModal = async () => {
@@ -33,24 +42,12 @@ function App() {
         setClickCount(0);
         const isCorrect = await openQuizModal();
         if (isCorrect) {
-          setTodoList((prevTodoList) =>
-            prevTodoList.map((todo) => {
-              console.log(todo.id, selectedTodoId);
-              if (todo.id === selectedTodoId) {
-                return { ...todo, done: true };
-              }
-              return todo;
-            }),
-          );
+          setTodoList( todoList.map((item) =>
+            item.id === selectedTodoId ? { ...item, done: true} : item
+          ))
         }
       }
-      if(clickCount > 3) {
-        setClickCount(0);
-        setSelectedTodoId(undefined);
-        setTodoList(todoList.map((todo) => ({ ...todo, done: false })));
-      }
     };
-
     handleQuizModal();
   }, [clickCount, openQuizModal, selectedTodoId, setTodoList, todoList]);
 
@@ -69,6 +66,14 @@ function App() {
             key={index}
             todo={todo}
             onToggle={async (id) => {
+              if (todo.done) {
+                setTodoList(
+                  todoList.map((item) =>
+                    item.id === id ? { ...item, done: false } : item
+                  )
+                );
+                return;
+              }
               if (clickCount < 3) {
                 toast({
                   title: "어?! 어라라... 3번 누르면 될까?",
@@ -77,10 +82,9 @@ function App() {
               setClickCount((prev) => prev + 1);
               setSelectedTodoId(id);
             }}
-            onUpdate={async () => {
-              await setSelectedTodoId(todo.id);
-              await setSelectedText(todo.text);
-              openEditModal();
+            onUpdate={ (id, text) => {
+             setSelectedTodoId(id);
+             setSelectedText(text);
             }}
             onRemove={(id) => {
               setClickCount(0);
